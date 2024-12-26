@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talabalar Ro'yxati</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .button {
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .button-add {
+            background-color: green;
+        }
+        .button-edit {
+            background-color: rgb(188, 188, 35);
+        }
+        .button-delete {
+            background-color: red;
+        }
+        /* Modal Style */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover, .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Talabalar Ro'yxati</h1>
+
+    <!-- Talaba qo'shish tugmasi -->
+    <div style="text-align: center;">
+        <button class="button button-add" id="myBtn">Talaba qo'shish</button>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeBtn">&times;</span>
+            <h2>Yangi Talaba Qo'shish</h2>
+            <form action="/add_student" method="post">
+                <input type="text" name="name" placeholder="Ism va Familiya" required><br><br>
+                <input type="text" name="phone" placeholder="Telefon" required><br><br>
+                <input type="email" name="email" placeholder="Email" required><br><br>
+                <button type="submit" class="button button-add">Talaba qo'shish</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Talabalar ro'yxati -->
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Ism Familiya</th>
+                <th>Telefon</th>
+                <th>Email</th>
+                <th>Amallar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.id }}</td>
+                <td>{{ student.name }}</td>
+                <td>{{ student.phone }}</td>
+                <td>{{ student.email }}</td>
+                <td>
+                    <a href="/edit_student/{{ student.id }}" class="button button-edit">Taxrirlash</a>
+                    <a href="/delete_student/{{ student.id }}" class="button button-delete">O'chirish</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        // Modalni ochish
+        var modal = document.getElementById("myModal");
+        var btn = document.getElementById("myBtn");
+        var span = document.getElementById("closeBtn");
+
+        // Tugmani bosganda modalni ochish
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // X tugmasini bosganda modalni yopish
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // Modal tashqarisiga bosganda yopish
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
